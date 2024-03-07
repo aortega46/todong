@@ -1,5 +1,20 @@
-<mat-checkbox (change)="toggleStatus()" [checked]="todo.status === 'Done'">
-  <span [class.done]="todo.status === 'Done'">
-    {{ todo.title }}
-  </span>
-</mat-checkbox>
+<section class="container">
+  <div class="container__checkbox checkbox">
+    <mat-checkbox
+      class="checkbox__btn"
+      (change)="toggleStatus()"
+      [checked]="todo.status === 'Done'">
+      <span
+        class="checkbox__label"
+        [class.checkbox__label--done]="todo.status === 'Done'">
+        {{ todo.title }}
+      </span>
+    </mat-checkbox>
+  </div>
+
+  <div class="container__menu menu">
+    <button mat-icon-button aria-label="Delete task" (click)="deleteTodo()">
+      <mat-icon color="accent">delete</mat-icon>
+    </button>
+  </div>
+</section>

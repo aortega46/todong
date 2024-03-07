@@ -1,3 +1,26 @@
-.done{
-  text-decoration: line-through;
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 3rem;
+  background: #f5f5f5;
+  border-radius: 1rem;
+
+  &:hover {
+    .menu {
+      display: block;
+    }
+  }
+
+  .checkbox {
+    &__label {
+      &--done {
+        text-decoration: line-through;
+      }
+    }
+  }
+
+  .menu {
+    display: none;
+  }
 }

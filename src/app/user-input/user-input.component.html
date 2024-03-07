@@ -3,9 +3,9 @@
     <mat-label>Add a task</mat-label>
     <input matInput type="text" name="taskInput" [(ngModel)]="taskTitle" />
     @if (taskTitle) {
-    <button matSuffix mat-icon-button aria-label="Clear">
-      <mat-icon>add</mat-icon>
-    </button>
+      <button matSuffix mat-icon-button aria-label="Clear" color="accent">
+        <mat-icon>add</mat-icon>
+      </button>
     }
   </mat-form-field>
 </form>
