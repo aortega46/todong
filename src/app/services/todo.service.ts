@@ -24,4 +24,23 @@ export class TodoService {
     const currentValue = this.todoList.getValue()
     this.todoList.next([...currentValue, newTodo])
   }
+
+  updateTodo(todo: Todo) {
+    const { id } = todo
+
+    const todoIndex = this.todoList.getValue().findIndex(todo => todo.id === id)
+    if (!todoIndex) return
+
+    const currentTodosList = this.todoList.getValue()
+    const newTodosList = [
+      ...currentTodosList.slice(0, todoIndex),
+      {
+        ...currentTodosList[todoIndex],
+        ...todo,
+      },
+      ...currentTodosList.slice(todoIndex + 1),
+    ]
+
+    this.todoList.next(newTodosList)
+  }
 }
