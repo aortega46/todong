@@ -27,11 +27,7 @@ export class UserInputComponent {
   todoService = inject(TodoService)
 
   addTodo() {
-    const newTodo: Todo = {
-      title: this.taskTitle,
-      status: 'Not started',
-    }
-    this.todoService.addTodo(newTodo)
+    this.todoService.addTodo(this.taskTitle)
     this.taskTitle = ''
   }
 }
