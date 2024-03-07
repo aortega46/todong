@@ -2,11 +2,14 @@ import { Component, inject } from '@angular/core'
 
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button'
-import { FormsModule } from '@angular/forms'
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { MatInputModule } from '@angular/material/input'
 import { MatFormFieldModule } from '@angular/material/form-field'
+
+import { MatDatepickerModule } from '@angular/material/datepicker'
+import { DateAdapter, provideNativeDateAdapter } from '@angular/material/core'
+
 import { TodoService } from '../services/todo.service'
-import { Todo } from '../interfaces/todo'
 
 @Component({
   selector: 'user-input',
@@ -14,20 +17,33 @@ import { Todo } from '../interfaces/todo'
   imports: [
     MatIconModule,
     MatButtonModule,
-    FormsModule,
     MatInputModule,
     MatFormFieldModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
   ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './user-input.component.html',
   styleUrl: './user-input.component.scss',
 })
 export class UserInputComponent {
-  taskTitle = ''
+  private todoService = inject(TodoService)
+  private fb = inject(FormBuilder)
 
-  todoService = inject(TodoService)
+  myTodo: FormGroup = this.fb.group({
+    date: [''],
+    title: [''],
+  })
+
+  constructor(private dateAdapter: DateAdapter<Date>) {
+    this.dateAdapter.setLocale('es-ES')
+  }
 
   addTodo() {
-    this.todoService.addTodo(this.taskTitle)
-    this.taskTitle = ''
+    const { title, date } = this.myTodo.value
+    if (!title || this.myTodo.invalid) return
+
+    this.todoService.addTodo({ title, date })
+    this.myTodo.reset()
   }
 }

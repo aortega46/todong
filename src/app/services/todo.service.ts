@@ -9,16 +9,19 @@ import { v4 } from 'uuid'
 })
 export class TodoService {
   private todoList = new BehaviorSubject<Todo[]>([
-    { id: 'task1', title: 'Task 1', status: 'Not started' },
+    { id: 'task1', title: 'Task 1', status: 'Not started', date: '7/3/2024' },
     { id: 'task2', title: 'Task 2', status: 'Not started' },
   ])
   todoList$ = this.todoList.asObservable()
 
-  addTodo(taskTitle: string) {
+  addTodo({ title, date }: { title: string; date: Date }) {
+    if (!title) return
+
     const newTodo: Todo = {
       id: v4(),
-      title: taskTitle,
+      title: title,
       status: 'Not started',
+      date: date ? date.toLocaleDateString('es-ES') : undefined,
     }
 
     const currentValue = this.todoList.getValue()

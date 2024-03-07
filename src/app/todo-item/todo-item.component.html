@@ -13,7 +13,14 @@
   </div>
 
   <div class="container__menu menu">
-    <button mat-icon-button aria-label="Delete task" (click)="deleteTodo()">
+    <span class="btn__label">
+      {{ todo.date }}
+    </span>
+    <button
+      class="menu__btn"
+      mat-icon-button
+      aria-label="Delete task"
+      (click)="deleteTodo()">
       <mat-icon color="accent">delete</mat-icon>
     </button>
   </div>

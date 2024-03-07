@@ -1,9 +1,33 @@
-<form (submit)="addTodo()">
-  <mat-form-field class="form">
+<form [formGroup]="myTodo" (submit)="addTodo()" class="form">
+  <mat-form-field class="form__date">
+    <button
+      type="button"
+      color="accent"
+      matPrefix
+      mat-icon-button
+      (click)="picker.open()">
+      <mat-icon>today</mat-icon>
+    </button>
+    <mat-label>Choose a date</mat-label>
+    <mat-datepicker #picker></mat-datepicker>
+    <input
+      formControlName="date"
+      placeholder="DD/MM/YYYY"
+      matInput
+      [matDatepicker]="picker"
+      (keydown.enter)="$event.preventDefault()" />
+  </mat-form-field>
+
+  <mat-form-field class="form__text">
     <mat-label>Add a task</mat-label>
-    <input matInput type="text" name="taskInput" [(ngModel)]="taskTitle" />
-    @if (taskTitle) {
-      <button matSuffix mat-icon-button aria-label="Clear" color="accent">
+    <input matInput formControlName="title" type="text" name="taskInput" />
+    @if (myTodo.get('title')?.value !== '') {
+      <button
+        type="submit"
+        matSuffix
+        mat-icon-button
+        aria-label="Clear"
+        color="accent">
         <mat-icon>add</mat-icon>
       </button>
     }
