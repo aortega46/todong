@@ -1,0 +1,5 @@
+<mat-checkbox (change)="toggleStatus()" [checked]="todo.status === 'Done'">
+  <span [class.done]="todo.status === 'Done'">
+    {{ todo.title }}
+  </span>
+</mat-checkbox>
