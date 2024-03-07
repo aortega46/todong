@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "format": "prettier -u --write $(git status --short | cut -c 3- | grep -v -E '.(yaml|yml)$')"
   },
   "private": true,
   "dependencies": {
@@ -20,6 +21,7 @@
     "@angular/platform-browser": "^17.2.0",
     "@angular/platform-browser-dynamic": "^17.2.0",
     "@angular/router": "^17.2.0",
+    "prettier": "^3.2.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "uuid": "^9.0.1",
