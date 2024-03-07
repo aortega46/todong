@@ -29,7 +29,7 @@ export class TodoService {
     const { id } = todo
 
     const todoIndex = this.todoList.getValue().findIndex(todo => todo.id === id)
-    if (!todoIndex) return
+    if (todoIndex === -1) return
 
     const currentTodosList = this.todoList.getValue()
     const newTodosList = [
