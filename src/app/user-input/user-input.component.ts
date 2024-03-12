@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core'
+import { Component, Input, inject } from '@angular/core'
 
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button'
@@ -27,6 +27,8 @@ import { TodoService } from '../services/todo.service'
   styleUrl: './user-input.component.scss',
 })
 export class UserInputComponent {
+  @Input() parentId?: string
+
   private todoService = inject(TodoService)
   private fb = inject(FormBuilder)
 
@@ -44,6 +46,14 @@ export class UserInputComponent {
     if (!title || this.myTodo.invalid) return
 
     this.todoService.addTodo({ title, date })
+    this.myTodo.reset()
+  }
+
+  addSubTask() {
+    const { title, date } = this.myTodo.value
+    if (!title || this.myTodo.invalid || !this.parentId) return
+
+    this.todoService.addSubTask({ title, date, parentId: this.parentId })
     this.myTodo.reset()
   }
 }

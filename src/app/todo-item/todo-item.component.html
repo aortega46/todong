@@ -16,12 +16,44 @@
     <span class="btn__label">
       {{ todo.date }}
     </span>
+
+    @if (!parentId && !isAddingSubTodo) {
+      <button
+        class="menu__btn"
+        mat-icon-button
+        aria-label="Delete task"
+        (click)="toggleAddSubTodo()">
+        <mat-icon color="accent">add</mat-icon>
+      </button>
+    }
+    @if (isAddingSubTodo) {
+      <button
+        class="menu__btn"
+        mat-icon-button
+        aria-label="Delete task"
+        (click)="toggleAddSubTodo()">
+        <mat-icon color="accent">remove</mat-icon>
+      </button>
+    }
+
     <button
       class="menu__btn"
       mat-icon-button
       aria-label="Delete task"
-      (click)="deleteTodo()">
+      (click)="parentId ? deleteSubTodo() : deleteTodo()">
       <mat-icon color="accent">delete</mat-icon>
     </button>
   </div>
+</section>
+
+@if (isAddingSubTodo) {
+  <section class="input">
+    <user-input [parentId]="todo.id" />
+  </section>
+}
+
+<section class="subtask">
+  @for (subtask of todo.subtasks; track $index) {
+    <todo-item [todo]="subtask" [parentId]="todo.id" />
+  }
 </section>

@@ -9,7 +9,13 @@ import { v4 } from 'uuid'
 })
 export class TodoService {
   private todoList = new BehaviorSubject<Todo[]>([
-    { id: 'task1', title: 'Task 1', status: 'Not started', date: '7/3/2024' },
+    {
+      id: 'task1',
+      title: 'Task 1',
+      status: 'Not started',
+      date: '7/3/2024',
+      subtasks: [{ id: 'task3', title: 'Task 3', status: 'Not started' }],
+    },
     { id: 'task2', title: 'Task 2', status: 'Not started' },
   ])
   todoList$ = this.todoList.asObservable()
@@ -52,5 +58,47 @@ export class TodoService {
     const newTodosList = currentTodosList.filter(todo => todo.id !== id)
 
     this.todoList.next(newTodosList)
+  }
+
+  findTodoById(id: string): Todo | undefined {
+    return this.todoList.getValue().find(item => item.id === id)
+  }
+
+  addSubTask({
+    title,
+    date,
+    parentId,
+  }: {
+    title: string
+    date: Date
+    parentId: string
+  }) {
+    const parent = this.findTodoById(parentId)
+    if (!parent || !title) return
+
+    const newTodo: Todo = {
+      id: v4(),
+      title: title,
+      status: 'Not started',
+      date: date ? date.toLocaleDateString('es-ES') : undefined,
+    }
+
+    const newParent: Todo = {
+      ...parent,
+      subtasks: [newTodo, ...(parent.subtasks || [])],
+    }
+
+    this.updateTodo(newParent)
+  }
+
+  deleteSubTask(id: string, parentId: string) {
+    const parent = this.findTodoById(parentId)
+    if (!parent) return
+
+    const newTodo = {
+      ...parent,
+      subtasks: parent.subtasks?.filter(todo => todo.id !== id),
+    }
+    this.updateTodo(newTodo)
   }
 }

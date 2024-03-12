@@ -1,4 +1,7 @@
-<form [formGroup]="myTodo" (submit)="addTodo()" class="form">
+<form
+  [formGroup]="myTodo"
+  (submit)="parentId ? addSubTask() : addTodo()"
+  class="form">
   <mat-form-field class="form__date">
     <button
       type="button"

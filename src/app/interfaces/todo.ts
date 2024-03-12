@@ -3,4 +3,5 @@ export interface Todo {
   title: string
   status: 'Not started' | 'In progress' | 'Done'
   date?: string
+  subtasks?: Todo[]
 }
