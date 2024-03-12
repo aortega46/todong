@@ -1,3 +1,5 @@
 @for (todo of todoService.todoList$ | async; track $index) {
   <todo-item [todo]="todo" />
+} @empty {
+  <p class="phrase">{{ phrase }}</p>
 }
