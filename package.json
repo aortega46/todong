@@ -7,6 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:coverage": "ng test --no-watch --code-coverage",
+    "test:wcoverage": "ng test --code-coverage",
     "format": "prettier -u --write $(git status --short | cut -c 3- | grep -v -E '.(yaml|yml)$')"
   },
   "private": true,
