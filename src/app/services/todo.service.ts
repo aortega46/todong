@@ -11,7 +11,7 @@ export class TodoService {
   private todoList = new BehaviorSubject<Todo[]>([])
   todoList$ = this.todoList.asObservable()
 
-  addTodo({ title, date }: { title: string; date: Date }) {
+  addTodo({ title, date }: { title: string; date?: Date }) {
     if (!title) return
 
     const newTodo: Todo = {
@@ -61,7 +61,7 @@ export class TodoService {
     parentId,
   }: {
     title: string
-    date: Date
+    date?: Date
     parentId: string
   }) {
     const parent = this.findTodoById(parentId)
