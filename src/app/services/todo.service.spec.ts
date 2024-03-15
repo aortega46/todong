@@ -137,6 +137,33 @@ describe('TodoService', () => {
     })
   })
 
+  it('should #updateSubTask', () => {
+    const mockSubtask: Todo = {
+      id: 'subtask1',
+      title: 'Subtask 1',
+      status: 'Not started',
+    }
+
+    const mockTodo: Todo = {
+      id: 'task1',
+      title: 'Task 1',
+      status: 'Not started',
+      subtasks: [mockSubtask],
+    }
+    service['todoList'].next([mockTodo])
+
+    service.updateSubTask({ ...mockSubtask, status: 'Done' }, 'task1')
+
+    service.todoList$.pipe(take(1)).subscribe(list => {
+      const todo = list[0]
+      const subtask = todo.subtasks![0]
+
+      expect(todo.subtasks).toBeDefined()
+      expect(todo.subtasks?.length).toBe(1)
+      expect(subtask.status).toBe('Done')
+    })
+  })
+
   it('should #deleteSubTask', () => {
     const mockTodo: Todo = {
       id: 'task1',

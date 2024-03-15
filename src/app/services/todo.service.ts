@@ -8,9 +8,7 @@ import { v4 } from 'uuid'
   providedIn: 'root',
 })
 export class TodoService {
-  private todoList = new BehaviorSubject<Todo[]>([
-    { id: 'asasa', title: 'babo', status: 'Not started' },
-  ])
+  private todoList = new BehaviorSubject<Todo[]>([])
   todoList$ = this.todoList.asObservable()
 
   addTodo({ title, date }: { title: string; date?: Date }) {
