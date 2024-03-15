@@ -35,7 +35,10 @@ export class TodoItemComponent {
       ...this.todo,
       status: this.todo.status == 'Not started' ? 'Done' : 'Not started',
     }
-    this.todoService.updateTodo(newTodo)
+
+    this.parentId
+      ? this.todoService.updateSubTask(newTodo, this.parentId)
+      : this.todoService.updateTodo(newTodo)
   }
 
   deleteTodo() {

@@ -8,7 +8,9 @@ import { v4 } from 'uuid'
   providedIn: 'root',
 })
 export class TodoService {
-  private todoList = new BehaviorSubject<Todo[]>([])
+  private todoList = new BehaviorSubject<Todo[]>([
+    { id: 'asasa', title: 'babo', status: 'Not started' },
+  ])
   todoList$ = this.todoList.asObservable()
 
   addTodo({ title, date }: { title: string; date?: Date }) {
@@ -77,6 +79,31 @@ export class TodoService {
     const newParent: Todo = {
       ...parent,
       subtasks: [newTodo, ...(parent.subtasks || [])],
+    }
+
+    this.updateTodo(newParent)
+  }
+
+  updateSubTask(todo: Todo, parentId: string) {
+    const parent = this.findTodoById(parentId)
+    if (!parent || !parent?.subtasks) return
+
+    const { id } = todo
+
+    const subTodoIndex = parent.subtasks.findIndex(todo => todo.id === id)
+    if (subTodoIndex == -1) return
+
+    const newSubTodoList = [
+      ...parent.subtasks.slice(0, subTodoIndex),
+      {
+        ...todo,
+      },
+      ...parent.subtasks.slice(subTodoIndex + 1),
+    ]
+
+    const newParent: Todo = {
+      ...parent,
+      subtasks: newSubTodoList,
     }
 
     this.updateTodo(newParent)
