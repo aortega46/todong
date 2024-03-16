@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { BehaviorSubject } from 'rxjs'
+import { BehaviorSubject, Observable } from 'rxjs'
 import { Todo } from '../interfaces/todo'
 
 import { v4 } from 'uuid'
@@ -8,8 +8,16 @@ import { v4 } from 'uuid'
   providedIn: 'root',
 })
 export class TodoService {
-  private todoList = new BehaviorSubject<Todo[]>([])
-  todoList$ = this.todoList.asObservable()
+  private todoList: BehaviorSubject<Todo[]>
+  todoList$: Observable<Todo[]>
+
+  constructor() {
+    const localList = localStorage.getItem('todoList')
+    const initialTodo = localList ? JSON.parse(localList) : []
+    this.todoList = new BehaviorSubject<Todo[]>(initialTodo)
+
+    this.todoList$ = this.todoList.asObservable()
+  }
 
   addTodo({ title, date }: { title: string; date?: Date }) {
     if (!title) return
@@ -23,6 +31,7 @@ export class TodoService {
 
     const currentValue = this.todoList.getValue()
     this.todoList.next([...currentValue, newTodo])
+    this.updateLocalStorge()
   }
 
   updateTodo(todo: Todo) {
@@ -42,6 +51,7 @@ export class TodoService {
     ]
 
     this.todoList.next(newTodosList)
+    this.updateLocalStorge()
   }
 
   deleteTodo(id: string) {
@@ -49,6 +59,7 @@ export class TodoService {
     const newTodosList = currentTodosList.filter(todo => todo.id !== id)
 
     this.todoList.next(newTodosList)
+    this.updateLocalStorge()
   }
 
   findTodoById(id: string): Todo | undefined {
@@ -116,5 +127,10 @@ export class TodoService {
       subtasks: parent.subtasks?.filter(todo => todo.id !== id),
     }
     this.updateTodo(newTodo)
+  }
+
+  updateLocalStorge() {
+    const current = this.todoList.getValue()
+    localStorage.setItem('todoList', JSON.stringify(current))
   }
 }
