@@ -9,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button'
 import { TodoService } from '../services/todo.service'
 import { UserInputComponent } from '../user-input/user-input.component'
 
+import { MatTooltipModule } from '@angular/material/tooltip'
+
 @Component({
   selector: 'todo-item',
   standalone: true,
@@ -18,6 +20,7 @@ import { UserInputComponent } from '../user-input/user-input.component'
     MatMenuModule,
     MatButtonModule,
     UserInputComponent,
+    MatTooltipModule,
   ],
   templateUrl: './todo-item.component.html',
   styleUrl: './todo-item.component.scss',
