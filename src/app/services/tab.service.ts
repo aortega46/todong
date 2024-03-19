@@ -113,9 +113,11 @@ export class TabService {
     const localList = localStorage.getItem('tabList')
     const initialTabs = localList ? JSON.parse(localList) : [defaultTab]
 
+    if (!localList) return initialTabs
+
     return initialTabs.map(
       (tab: { id: string; name: string; todo: Todo[] }) => ({
-        id: tab,
+        id: tab.id,
         name: tab.name,
         todo: TodoService.fromSerializableObject(tab.todo),
       })
