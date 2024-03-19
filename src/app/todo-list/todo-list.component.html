@@ -1,5 +1,30 @@
-@for (todo of todoService.todoList$ | async; track $index) {
-  <todo-item [todo]="todo" />
-} @empty {
-  <p class="phrase">{{ phrase }}</p>
-}
+<mat-tab-group
+  style="height: 100%; box-sizing: border-box"
+  [selectedIndex]="selectedTabIndex$ | async"
+  (selectedIndexChange)="tabService.updateSelectedTabIndex($event)">
+  @for (tab of tabService.tabList$ | async; track tab) {
+    <mat-tab [label]="tab.name">
+      @for (todo of todos$ | async; track $index) {
+        <todo-item [todo]="todo" />
+      }
+
+      <div
+        class="options"
+        [class.options--centered]="(todos$ | async)?.length == 0">
+        <p class="options__p">
+          {{ phrase }}
+        </p>
+        <div class="options__buttons">
+          <button mat-raised-button (click)="addNewTab()">
+            Create new list
+          </button>
+          @if ((selectedTabIndex$ | async) !== 0) {
+            <button mat-raised-button (click)="removeTab(tab.id)">
+              Remove selected list
+            </button>
+          }
+        </div>
+      </div>
+    </mat-tab>
+  }
+</mat-tab-group>

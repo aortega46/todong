@@ -115,7 +115,7 @@ describe('TodoService', () => {
   })
 
   it('should return undefined #findTodoById', () => {
-    const res = service.findTodoById('task1')
+    const res = service.findTodoById('testundefined')
     expect(res).toBeUndefined()
   })
 
