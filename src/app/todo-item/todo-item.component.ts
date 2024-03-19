@@ -6,10 +6,10 @@ import { MatIconModule } from '@angular/material/icon'
 import { MatMenuModule } from '@angular/material/menu'
 import { MatButtonModule } from '@angular/material/button'
 
-import { TodoService } from '../services/todo.service'
 import { UserInputComponent } from '../user-input/user-input.component'
 
 import { MatTooltipModule } from '@angular/material/tooltip'
+import { TabService } from '../services/tab.service'
 
 @Component({
   selector: 'todo-item',
@@ -29,7 +29,7 @@ export class TodoItemComponent {
   @Input() todo!: Todo
   @Input() parentId?: string
 
-  todoService = inject(TodoService)
+  tabService = inject(TabService)
 
   isAddingSubTodo: boolean = false
 
@@ -40,17 +40,17 @@ export class TodoItemComponent {
     }
 
     this.parentId
-      ? this.todoService.updateSubTask(newTodo, this.parentId)
-      : this.todoService.updateTodo(newTodo)
+      ? this.tabService.updateSubTaskTab(newTodo, this.parentId)
+      : this.tabService.updateTaskTab(newTodo)
   }
 
   deleteTodo() {
-    this.todoService.deleteTodo(this.todo.id)
+    this.tabService.deleteTaskFromTab(this.todo.id)
   }
 
   deleteSubTodo() {
     if (!this.parentId) return
-    this.todoService.deleteSubTask(this.todo.id, this.parentId)
+    this.tabService.deleteSubTaskFromTab(this.todo.id, this.parentId)
   }
 
   toggleAddSubTodo() {

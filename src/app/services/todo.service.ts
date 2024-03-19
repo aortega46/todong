@@ -11,6 +11,16 @@ export class TodoService {
   private todoList: BehaviorSubject<Todo[]>
   todoList$: Observable<Todo[]>
 
+  static fromSerializableObject(data: Todo[]) {
+    const todoService = new TodoService()
+    todoService['todoList'].next(data)
+    return todoService
+  }
+
+  toSerializableObject() {
+    return this.todoList.getValue()
+  }
+
   constructor() {
     const localList = localStorage.getItem('todoList')
     const initialTodo = localList ? JSON.parse(localList) : []
@@ -30,8 +40,7 @@ export class TodoService {
     }
 
     const currentValue = this.todoList.getValue()
-    this.todoList.next([...currentValue, newTodo])
-    this.updateLocalStorge()
+    this.todoList.next([newTodo, ...currentValue])
   }
 
   updateTodo(todo: Todo) {
@@ -51,7 +60,6 @@ export class TodoService {
     ]
 
     this.todoList.next(newTodosList)
-    this.updateLocalStorge()
   }
 
   deleteTodo(id: string) {
@@ -59,7 +67,6 @@ export class TodoService {
     const newTodosList = currentTodosList.filter(todo => todo.id !== id)
 
     this.todoList.next(newTodosList)
-    this.updateLocalStorge()
   }
 
   findTodoById(id: string): Todo | undefined {
@@ -127,10 +134,5 @@ export class TodoService {
       subtasks: parent.subtasks?.filter(todo => todo.id !== id),
     }
     this.updateTodo(newTodo)
-  }
-
-  updateLocalStorge() {
-    const current = this.todoList.getValue()
-    localStorage.setItem('todoList', JSON.stringify(current))
   }
 }
