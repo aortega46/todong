@@ -53,6 +53,8 @@ export class TabService {
   }
 
   addTaskToTab(id: string) {
+    if (!id) return
+
     const currentTabs = this.tabList.getValue()
     const updatedTabs = [...currentTabs]
 
