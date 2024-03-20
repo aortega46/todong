@@ -25,6 +25,7 @@ describe('TodoService', () => {
   let service: TodoService
 
   beforeEach(() => {
+    localStorage.clear()
     TestBed.configureTestingModule({})
     service = TestBed.inject(TodoService)
   })
@@ -164,7 +165,7 @@ describe('TodoService', () => {
     })
   })
 
-  it('should #deleteSubTask', () => {
+  it('should #deleteSubTask', done => {
     const mockTodo: Todo = {
       id: 'task1',
       title: 'Task 1',
@@ -180,6 +181,21 @@ describe('TodoService', () => {
 
       expect(todo.subtasks).toBeDefined()
       expect(todo.subtasks?.length).toBe(0)
+
+      done()
     })
+  })
+
+  it('should return the filtered ToDo by ids #getTodoByTabIds', () => {
+    service['todoList'].next(todoListMock)
+    const tabIds = ['task1']
+
+    service
+      .getTodoByTabIds(tabIds)
+      .pipe(take(1))
+      .subscribe(todos => {
+        expect(todos[0].id).toBe('task1')
+        expect(todos.length).toBe(1)
+      })
   })
 })

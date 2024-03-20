@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatDatepickerModule } from '@angular/material/datepicker'
 import { DateAdapter, provideNativeDateAdapter } from '@angular/material/core'
 
+import { TabService } from '../services/tab.service'
 import { TodoService } from '../services/todo.service'
 
 @Component({
@@ -30,6 +31,7 @@ export class UserInputComponent {
   @Input() parentId?: string
 
   private todoService = inject(TodoService)
+  private tabService = inject(TabService)
   private fb = inject(FormBuilder)
 
   myTodo: FormGroup = this.fb.group({
@@ -45,7 +47,9 @@ export class UserInputComponent {
     const { title, date } = this.myTodo.value
     if (!title || this.myTodo.invalid) return
 
-    this.todoService.addTodo({ title, date })
+    const id = this.todoService.addTodo({ title, date })
+    if (id) this.tabService.addTaskToTab(id)
+
     this.myTodo.reset()
   }
 

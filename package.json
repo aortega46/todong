@@ -9,7 +9,8 @@
     "test": "ng test",
     "test:coverage": "ng test --no-watch --code-coverage",
     "test:wcoverage": "ng test --code-coverage",
-    "format": "prettier -u --write $(git status --short | cut -c 3- | grep -v -E '.(yaml|yml)$')"
+    "format": "prettier -u --write $(git status --short | cut -c 3- | grep -v -E '.(yaml|yml)$')",
+    "test:ci": "ng test --no-watch --no-progress --browsers=ChromeHeadless"
   },
   "private": true,
   "dependencies": {

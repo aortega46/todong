@@ -15,7 +15,7 @@ test('should render input and add a new ToDo', async ({ page }) => {
 
   expect((await page.locator('todo-item').all()).length).toBe(2)
   expect(await page.locator('todo-item').first().textContent()).toContain(
-    'Task 1'
+    'Task 2'
   )
 })
 
@@ -96,4 +96,36 @@ test('should delete a subTask', async ({ page }) => {
 
   expect(await page.getByText('Subtask 1', { exact: true }).count()).toBe(0)
   await expect(page.getByText('Task 1')).toBeVisible()
+})
+
+test('should create a new tab', async ({ page }) => {
+  await page.getByRole('button', { name: 'Create new list' }).click()
+  await page.getByText('New list name').fill('New tab')
+  await page.getByRole('button', { name: 'Create' }).click()
+  await page.waitForSelector('div.mat-mdc-tab-labels > *:nth-child(2)')
+
+  await expect(page.getByRole('tab', { name: 'New tab' })).toBeVisible()
+
+  const labelsChildren = await page
+    .locator('div.mat-mdc-tab-labels > *')
+    .count()
+  expect(labelsChildren).toBe(2)
+})
+
+test('should remove a tab', async ({ page }) => {
+  await page.getByRole('button', { name: 'Create new list' }).click()
+  await page.getByText('New list name').fill('New tab')
+  await page.getByRole('button', { name: 'Create' }).click()
+  await page.waitForSelector('div.mat-mdc-tab-labels > *:nth-child(2)')
+
+  await page.getByRole('tab', { name: 'New tab' }).click()
+  await page.getByRole('button', { name: 'Remove selected list' }).click()
+  await page.waitForSelector('div.mat-mdc-tab-labels > *:nth-child(2)', {
+    state: 'hidden',
+  })
+
+  const labelsChildrenCount = await page
+    .locator('div.mat-mdc-tab-labels > *')
+    .count()
+  expect(labelsChildrenCount).toBe(1)
 })
